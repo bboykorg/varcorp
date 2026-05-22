@@ -6,21 +6,21 @@
     <title>VarCorp — инди-студия на Java</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0c0618;
-            --bg-glow: #1a0f2e;
-            --surface: #150d24;
-            --surface-hover: #1f1435;
-            --border: #3b2a5c;
-            --accent: #a855f7;
-            --accent-light: #c084fc;
-            --accent-dark: #7c3aed;
-            --accent-soft: rgba(168, 85, 247, 0.14);
-            --text: #f3effa;
-            --muted: #a89bc4;
-            --radius: 12px;
+            --bg: #1a252f;
+            --bg-glow: #1e272e;
+            --surface: #232f3d;
+            --surface-hover: #2a3644;
+            --border: rgba(255, 255, 255, 0.12);
+            --accent: #ffffff;
+            --accent-light: #ffffff;
+            --accent-dark: #e2e8f0;
+            --accent-soft: rgba(255, 255, 255, 0.08);
+            --text: #ffffff;
+            --muted: #94a3b8;
+            --radius: 18px;
             --header-h: 64px;
         }
 
@@ -35,7 +35,7 @@
         }
 
         body {
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
             background: var(--bg);
             color: var(--text);
             line-height: 1.6;
@@ -65,19 +65,27 @@
             width: 280px;
             height: 280px;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(168, 85, 247, 0.45), transparent 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 70%);
             animation: introGlow 1.4s ease-in-out infinite;
         }
 
-        .intro-logo {
+        .intro-media {
             position: relative;
+            border-radius: 28px;
+            overflow: hidden;
+            line-height: 0;
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.08);
+            animation: introLogoIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .intro-logo {
+            display: block;
             width: 88px;
             height: 88px;
-            border-radius: 22px;
             object-fit: cover;
-            border: 2px solid var(--border);
-            box-shadow: 0 0 40px rgba(168, 85, 247, 0.4);
-            animation: introLogoIn 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            border-radius: 28px;
+            border: none;
+            box-shadow: none;
         }
 
         .intro-text {
@@ -90,7 +98,7 @@
         }
 
         .intro-text span {
-            color: var(--accent-light);
+            color: var(--muted);
         }
 
         .intro-bar {
@@ -107,7 +115,7 @@
         .intro-bar-fill {
             height: 100%;
             width: 0;
-            background: linear-gradient(90deg, var(--accent-dark), var(--accent-light));
+            background: var(--accent);
             border-radius: 999px;
             animation: introBarFill 0.85s ease 0.55s forwards;
         }
@@ -196,6 +204,7 @@
         @media (prefers-reduced-motion: reduce) {
             .intro,
             .intro-glow,
+            .intro-media,
             .intro-logo,
             .intro-text,
             .intro-bar,
@@ -217,8 +226,8 @@
             position: fixed;
             inset: 0;
             background:
-                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(124, 58, 237, 0.22), transparent),
-                radial-gradient(ellipse 60% 40% at 100% 50%, rgba(168, 85, 247, 0.08), transparent);
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(255, 255, 255, 0.04), transparent),
+                radial-gradient(ellipse 60% 40% at 100% 80%, rgba(255, 255, 255, 0.03), transparent);
             pointer-events: none;
             z-index: 0;
         }
@@ -240,7 +249,7 @@
             z-index: 100;
             height: var(--header-h);
             border-bottom: 1px solid var(--border);
-            background: rgba(12, 6, 24, 0.88);
+            background: rgba(26, 37, 47, 0.92);
             backdrop-filter: blur(12px);
         }
 
@@ -262,11 +271,12 @@
         }
 
         .brand-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            object-fit: cover;
-            border: 1px solid var(--border);
+            height: 36px;
+            width: auto;
+            max-width: 120px;
+            border-radius: 0;
+            object-fit: contain;
+            border: none;
             flex-shrink: 0;
         }
 
@@ -277,7 +287,7 @@
         }
 
         .brand-name span {
-            color: var(--accent-light);
+            color: var(--muted);
         }
 
         nav ul {
@@ -295,7 +305,7 @@
         }
 
         nav a:hover {
-            color: var(--accent-light);
+            color: var(--accent);
         }
 
         /* ——— Hero ——— */
@@ -318,7 +328,7 @@
             text-transform: uppercase;
             color: var(--accent-light);
             background: var(--accent-soft);
-            border: 1px solid rgba(168, 85, 247, 0.35);
+            border: 1px solid var(--border);
             padding: 0.35rem 0.75rem;
             border-radius: 999px;
             margin-bottom: 1rem;
@@ -334,7 +344,7 @@
 
         .hero h1 em {
             font-style: normal;
-            color: var(--accent-light);
+            color: var(--accent);
         }
 
         .hero-lead {
@@ -355,7 +365,7 @@
             align-items: center;
             justify-content: center;
             padding: 0.7rem 1.35rem;
-            border-radius: 8px;
+            border-radius: 999px;
             font-size: 0.9rem;
             font-weight: 600;
             text-decoration: none;
@@ -363,13 +373,13 @@
         }
 
         .btn-primary {
-            background: linear-gradient(135deg, var(--accent-dark), var(--accent));
-            color: #fff;
-            box-shadow: 0 4px 20px rgba(124, 58, 237, 0.35);
+            background: var(--accent);
+            color: var(--bg);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
         }
 
         .btn-primary:hover {
-            background: linear-gradient(135deg, var(--accent), var(--accent-light));
+            background: var(--accent-dark);
             transform: translateY(-1px);
         }
 
@@ -381,16 +391,29 @@
 
         .btn-ghost:hover {
             border-color: var(--accent);
-            color: var(--accent-light);
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        .hero-avatar-wrap {
+            display: inline-block;
+            line-height: 0;
+            border-radius: 32px;
+            overflow: hidden;
+            border: 2px solid var(--border);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
         }
 
         .hero-avatar {
+            display: block;
             width: min(200px, 28vw);
             height: min(200px, 28vw);
-            border-radius: 20px;
+            border-radius: 32px;
             object-fit: cover;
-            border: 2px solid var(--border);
-            box-shadow: 0 20px 50px rgba(124, 58, 237, 0.25);
+            border: none;
+            box-shadow: none;
+            -webkit-mask-image: radial-gradient(ellipse 94% 94% at 50% 50%, #000 90%, transparent 100%);
+            mask-image: radial-gradient(ellipse 94% 94% at 50% 50%, #000 90%, transparent 100%);
         }
 
         /* ——— Секции ——— */
@@ -416,8 +439,8 @@
             display: block;
             width: 36px;
             height: 3px;
-            background: linear-gradient(90deg, var(--accent-dark), var(--accent-light));
-            border-radius: 2px;
+            background: var(--accent);
+            border-radius: 999px;
             margin: 0.6rem auto 0;
         }
 
@@ -439,6 +462,34 @@
             gap: 1.25rem;
         }
 
+        #stack .directions-grid {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 1rem;
+        }
+
+        #stack .directions-grid .card {
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 1.25rem;
+        }
+
+        #stack .directions-grid .card h3 {
+            font-size: 0.95rem;
+        }
+
+        #stack .directions-grid .card p {
+            font-size: 0.8rem;
+            line-height: 1.45;
+        }
+
+        #stack .directions-grid .card-icon {
+            width: 2rem;
+            height: 2rem;
+            font-size: 0.85rem;
+            margin-bottom: 0.65rem;
+        }
+
         .card {
             background: var(--bg);
             border: 1px solid var(--border);
@@ -454,15 +505,15 @@
         .card:hover {
             border-color: var(--accent);
             transform: translateY(-3px);
-            box-shadow: 0 8px 30px rgba(124, 58, 237, 0.15);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
         }
 
         .card-icon {
             width: 2.25rem;
             height: 2.25rem;
-            border-radius: 8px;
+            border-radius: 12px;
             background: var(--accent-soft);
-            color: var(--accent-light);
+            color: var(--accent);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -512,7 +563,7 @@
         .project-card:hover {
             border-color: var(--accent);
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
         }
 
         .project-header {
@@ -537,7 +588,7 @@
             letter-spacing: 0.05em;
             color: var(--accent-light);
             background: var(--accent-soft);
-            border: 1px solid rgba(168, 85, 247, 0.3);
+            border: 1px solid var(--border);
             padding: 0.25rem 0.6rem;
             border-radius: 999px;
         }
@@ -642,6 +693,23 @@
             .hero-avatar {
                 width: 140px;
                 height: 140px;
+                border-radius: 28px;
+            }
+
+            .hero-avatar-wrap {
+                border-radius: 28px;
+            }
+
+            #stack .directions-grid {
+                overflow-x: auto;
+                padding-bottom: 0.5rem;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: thin;
+            }
+
+            #stack .directions-grid .card {
+                flex: 0 0 220px;
+                min-width: 220px;
             }
         }
 
@@ -669,7 +737,9 @@
 
 <div class="intro" id="intro" aria-hidden="true">
     <div class="intro-glow"></div>
-    <img class="intro-logo" src="static/photo_2026-04-11_00-10-23.jpg" alt="">
+    <div class="intro-media">
+        <img class="intro-logo" src="../static/photo_2026-05-22_22-05-19.jpg" alt="VarCorp">
+    </div>
     <p class="intro-text">Var<span>Corp</span></p>
     <div class="intro-bar"><div class="intro-bar-fill"></div></div>
 </div>
@@ -677,7 +747,7 @@
 <header class="reveal reveal-down" style="--d: 0ms">
     <div class="container header-inner">
         <a href="#" class="brand">
-            <img class="brand-logo" src="static/photo_2026-04-11_00-10-23.jpg" alt="" width="40" height="40">
+            <img class="brand-logo" src="../static/logo.png" alt="VarCorp">
             <span class="brand-name">Var<span>Corp</span></span>
         </a>
         <nav>
@@ -707,7 +777,7 @@
                 </div>
             </div>
             <div class="hero-avatar-wrap reveal reveal-scale" style="--d: 280ms">
-                <img class="hero-avatar" src="static/photo_2026-04-11_00-10-23.jpg" alt="VarCorp" width="200" height="200">
+                <img class="hero-avatar" src="../static/photo_2026-05-22_22-05-19.jpg" alt="VarCorp" width="200" height="200">
             </div>
         </div>
     </section>
@@ -734,7 +804,7 @@
     <section id="stack" class="section section-alt reveal" style="--d: 100ms">
         <div class="container">
             <h2 class="section-title">Направления</h2>
-            <div class="grid">
+            <div class="grid directions-grid">
                 <article class="card reveal" style="--d: 180ms">
                     <div class="card-icon">01</div>
                     <h3>Разработка ПО</h3>
@@ -749,6 +819,11 @@
                     <div class="card-icon">03</div>
                     <h3>Автоматизация</h3>
                     <p>Утилиты, парсеры и консольные скрипты, которые снимают рутину с команды.</p>
+                </article>
+                <article class="card reveal" style="--d: 480ms">
+                    <div class="card-icon">04</div>
+                    <h3>Работа с нейросетями</h3>
+                    <p>Интеграция LLM в продукты: чат-боты, ассистенты, обработка текста и автоматизация сценариев под ваши задачи.</p>
                 </article>
             </div>
         </div>
@@ -775,7 +850,7 @@
 
 <script>
     (function () {
-        const PROJECTS_URL = 'data/projects.json';
+        const PROJECTS_URL = '../data/projects.json';
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const introDuration = reduced ? 0 : 1400;
 
