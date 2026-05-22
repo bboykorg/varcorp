@@ -179,6 +179,12 @@
             animation-delay: var(--d, 0ms);
         }
 
+        .reveal.is-visible {
+            opacity: 1;
+            transform: none;
+            animation: none;
+        }
+
         body.loaded .reveal-down {
             animation-name: revealDown;
         }
@@ -478,9 +484,18 @@
         /* ——— Проекты ——— */
         .projects-grid {
             display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 1.25rem;
-            max-width: 640px;
-            margin-inline: auto;
+        }
+
+        .projects-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.95rem;
+            padding: 2rem;
+            border: 1px dashed var(--border);
+            border-radius: var(--radius);
         }
 
         .project-card {
@@ -654,7 +669,7 @@
 
 <div class="intro" id="intro" aria-hidden="true">
     <div class="intro-glow"></div>
-    <img class="intro-logo" src="static/photo_2026-04-11_00-10-23.jpg" alt="">
+    <img class="intro-logo" src="../static/photo_2026-04-11_00-10-23.jpg" alt="">
     <p class="intro-text">Var<span>Corp</span></p>
     <div class="intro-bar"><div class="intro-bar-fill"></div></div>
 </div>
@@ -662,7 +677,7 @@
 <header class="reveal reveal-down" style="--d: 0ms">
     <div class="container header-inner">
         <a href="#" class="brand">
-            <img class="brand-logo" src="static/photo_2026-04-11_00-10-23.jpg" alt="" width="40" height="40">
+            <img class="brand-logo" src="../static/photo_2026-04-11_00-10-23.jpg" alt="" width="40" height="40">
             <span class="brand-name">Var<span>Corp</span></span>
         </a>
         <nav>
@@ -692,7 +707,7 @@
                 </div>
             </div>
             <div class="hero-avatar-wrap reveal reveal-scale" style="--d: 280ms">
-                <img class="hero-avatar" src="static/photo_2026-04-11_00-10-23.jpg" alt="VarCorp" width="200" height="200">
+                <img class="hero-avatar" src="../static/photo_2026-04-11_00-10-23.jpg" alt="VarCorp" width="200" height="200">
             </div>
         </div>
     </section>
@@ -701,9 +716,10 @@
         <div class="container">
             <h2 class="section-title">Кто мы</h2>
             <p class="about-text">
-                В <strong>VarCorp</strong> хороший софт рождается на стыке чистого кода и свободы творчества.
-                Главный инструмент — экосистема Java. Без раздутых штатов и бюрократии:
-                берём сложные задачи и превращаем их в поддерживаемые программы.
+                <strong>VarCorp</strong> — небольшая инди-команда разработчиков. Мы пишем на Java:
+                от десктопных приложений до бэкенда и утилит под конкретные задачи.
+                Работаем без лишней бюрократии — обсуждаем идею напрямую, делаем прототип,
+                доводим до релиза и оставляем код, который не страшно поддерживать через полгода.
             </p>
         </div>
     </section>
@@ -711,19 +727,7 @@
     <section id="projects" class="section reveal" style="--d: 150ms">
         <div class="container">
             <h2 class="section-title">Проекты</h2>
-            <div class="projects-grid">
-                <a class="project-card reveal reveal-scale" style="--d: 250ms" href="https://detektivnastolki.ru/" target="_blank" rel="noopener noreferrer">
-                    <div class="project-header">
-                        <h3 class="project-title">Настолки Сыщиков</h3>
-                        <span class="project-tag">Сайт</span>
-                    </div>
-                    <p class="project-desc">
-                        Магазин детективных настольных игр с расследованиями и документами —
-                        каталог, оформление заказов и удобный интерфейс для любителей жанра.
-                    </p>
-                    <span class="project-link">detektivnastolki.ru</span>
-                </a>
-            </div>
+            <div class="projects-grid" id="projects-grid"></div>
         </div>
     </section>
 
@@ -772,6 +776,7 @@
 
 <script>
     (function () {
+        const PROJECTS_URL = '../data/projects.json';
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const introDuration = reduced ? 0 : 1400;
 
@@ -789,6 +794,101 @@
         } else {
             window.addEventListener('load', () => setTimeout(finishIntro, introDuration));
         }
+
+        function projectUrl(domain) {
+            if (!domain) return '#';
+            if (/^https?:\/\//i.test(domain)) return domain;
+            return 'https://' + domain.replace(/^\/+/, '');
+        }
+
+        function displayDomain(domain) {
+            return domain.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+        }
+
+        function renderProjects(projects) {
+            const grid = document.getElementById('projects-grid');
+            if (!grid) return;
+
+            grid.replaceChildren();
+
+            if (!projects.length) {
+                const empty = document.createElement('p');
+                empty.className = 'projects-empty';
+                empty.textContent = 'Проекты скоро появятся.';
+                grid.appendChild(empty);
+                return;
+            }
+
+            projects.forEach(function (project) {
+                const card = document.createElement('a');
+                card.className = 'project-card';
+                card.href = projectUrl(project.domain);
+                card.target = '_blank';
+                card.rel = 'noopener noreferrer';
+
+                const header = document.createElement('div');
+                header.className = 'project-header';
+
+                const title = document.createElement('h3');
+                title.className = 'project-title';
+                title.textContent = project.title;
+
+                const tag = document.createElement('span');
+                tag.className = 'project-tag';
+                tag.textContent = project.tag || 'Сайт';
+
+                const desc = document.createElement('p');
+                desc.className = 'project-desc';
+                desc.textContent = project.description;
+
+                const link = document.createElement('span');
+                link.className = 'project-link';
+                link.textContent = displayDomain(project.domain);
+
+                header.append(title, tag);
+                card.append(header, desc, link);
+                grid.appendChild(card);
+            });
+        }
+
+        function showProjectsError() {
+            const grid = document.getElementById('projects-grid');
+            if (!grid) return;
+
+            grid.replaceChildren();
+            const msg = document.createElement('p');
+            msg.className = 'projects-empty';
+            msg.textContent = 'Не удалось загрузить проекты. Откройте сайт через локальный сервер (Live Server).';
+            grid.appendChild(msg);
+        }
+
+        function loadProjects() {
+            const url = new URL(PROJECTS_URL, window.location.href);
+            url.searchParams.set('_', String(Date.now()));
+
+            fetch(url, { cache: 'no-store' })
+                .then(function (res) {
+                    if (!res.ok) throw new Error('HTTP ' + res.status);
+                    return res.json();
+                })
+                .then(function (data) {
+                    const list = Array.isArray(data) ? data : (data.projects || []);
+                    const valid = [];
+
+                    list.forEach(function (p) {
+                        if (!p || !p.title || !p.description || !p.domain) {
+                            console.warn('Пропущен проект — нужны поля title, description, domain:', p);
+                            return;
+                        }
+                        valid.push(p);
+                    });
+
+                    renderProjects(valid);
+                })
+                .catch(showProjectsError);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadProjects);
     })();
 </script>
 
